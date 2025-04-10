@@ -64,50 +64,49 @@ with open("Act 4.3/tf_idf_markov.csv", "w", newline="") as output_file:
         ]
     )
 
-    # for q1, q2 in questions:
-    q1, q2 = questions[0]
-    texts = [q1, q2]
-    vocab = list(set(q1.lower().split() + q2.lower().split()))
+    for q1, q2 in questions:
+        texts = [q1, q2]
+        vocab = list(set(q1.lower().split() + q2.lower().split()))
 
-    # ===== BoW (Bag of Words) =====
-    bow_vectorizer = CountVectorizer()
-    bow_matrix = bow_vectorizer.fit_transform(texts)
-    bow_array = bow_matrix.toarray()
+        # ===== BoW (Bag of Words) =====
+        bow_vectorizer = CountVectorizer()
+        bow_matrix = bow_vectorizer.fit_transform(texts)
+        bow_array = bow_matrix.toarray()
 
-    q1_bow_vec = bow_array[0].tolist()
-    q2_bow_vec = bow_array[1].tolist()
+        q1_bow_vec = bow_array[0].tolist()
+        q2_bow_vec = bow_array[1].tolist()
 
-    cos_bow = cosine_similarity(bow_array[0:1], bow_array[1:2])[0][0]
+        cos_bow = cosine_similarity(bow_array[0:1], bow_array[1:2])[0][0]
 
-    # ===== TF-IDF =====
-    tfidf_vectorizer = TfidfVectorizer()
-    tfidf_matrix = tfidf_vectorizer.fit_transform(texts)
-    tfidf_array = tfidf_matrix.toarray()
+        # ===== TF-IDF =====
+        tfidf_vectorizer = TfidfVectorizer()
+        tfidf_matrix = tfidf_vectorizer.fit_transform(texts)
+        tfidf_array = tfidf_matrix.toarray()
 
-    q1_tfidf_vec = tfidf_array[0].tolist()
-    q2_tfidf_vec = tfidf_array[1].tolist()
+        q1_tfidf_vec = tfidf_array[0].tolist()
+        q2_tfidf_vec = tfidf_array[1].tolist()
 
-    cos_tfidf = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])[0][0]
+        cos_tfidf = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])[0][0]
 
-    # ===== Cadenas de Markov =====
-    q1_mark_vec = markov_matrix(q1, vocab)
-    q2_mark_vec = markov_matrix(q2, vocab)
+        # ===== Cadenas de Markov =====
+        q1_mark_vec = markov_matrix(q1, vocab)
+        q2_mark_vec = markov_matrix(q2, vocab)
 
-    cos_mark = cosine_similarity([q1_mark_vec], [q2_mark_vec])[0][0]
+        cos_mark = cosine_similarity([q1_mark_vec], [q2_mark_vec])[0][0]
 
-    # Escribir resultados
-    writer.writerow(
-        [
-            q1,
-            q2,
-            cos_bow,
-            cos_tfidf,
-            cos_mark,
-            q1_bow_vec,
-            q2_bow_vec,
-            q1_tfidf_vec,
-            q2_tfidf_vec,
-            q1_mark_vec,
-            q2_mark_vec,
-        ]
-    )
+        # Escribir resultados
+        writer.writerow(
+            [
+                q1,
+                q2,
+                cos_bow,
+                cos_tfidf,
+                cos_mark,
+                q1_bow_vec,
+                q2_bow_vec,
+                q1_tfidf_vec,
+                q2_tfidf_vec,
+                q1_mark_vec,
+                q2_mark_vec,
+            ]
+        )
