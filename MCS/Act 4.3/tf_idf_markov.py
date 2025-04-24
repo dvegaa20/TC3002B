@@ -5,10 +5,34 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
 
 def term_frequency(word, document):
+    """
+    Calculate the term frequency of a word in a document.
+
+    Args:
+        word (str): The word to calculate the frequency for.
+        document (str): The document to search within.
+
+    Returns:
+        float: The frequency of the word in the document, defined as
+               the count of the word divided by the total number of words in the document.
+    """
+
     return document.count(word) / len(document)
 
 
 def inverse_document_frequency(word, corpus):
+    """
+    Calculate the inverse document frequency of a word in a corpus.
+
+    Args:
+        word (str): The word to calculate the IDF for.
+        corpus (list): The list of documents to consider.
+
+    Returns:
+        float: The IDF of the word in the corpus, defined as
+               the logarithm of the total number of documents divided by the number of documents containing the word.
+    """
+
     count_of_documents = len(corpus) + 1
     count_of_documents_with_word = sum([1 for doc in corpus if word in doc]) + 1
     idf = np.log10(count_of_documents / count_of_documents_with_word) + 1
@@ -16,10 +40,33 @@ def inverse_document_frequency(word, corpus):
 
 
 def tf_idf(word, document, corpus):
+    """
+    Calculate the TF-IDF score of a word in a document.
+
+    Args:
+        word (str): The word to calculate the TF-IDF score for.
+        document (str): The document to search within.
+        corpus (list): The list of documents to consider.
+
+    Returns:
+        float: The TF-IDF score of the word in the document, defined as the product of the term frequency and inverse document frequency.
+    """
+
     return term_frequency(word, document) * inverse_document_frequency(word, corpus)
 
 
 def markov_matrix(document, vocab):
+    """
+    Calculate a Markov matrix representing the probability of transitioning from one word to another in a document.
+
+    Args:
+        document (str): The document to generate the matrix for.
+        vocab (list): The list of words to consider.
+
+    Returns:
+        The Markov transition matrix, represented as a flattened numpy array.
+    """
+
     words = document.lower().split()
     m_matrix = np.zeros((len(vocab), len(vocab)), dtype=np.float64)
 
